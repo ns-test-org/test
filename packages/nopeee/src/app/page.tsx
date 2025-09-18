@@ -1,103 +1,220 @@
-import Image from "next/image";
+'use client';
+
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentNope, setCurrentNope] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  const [clickCount, setClickCount] = useState(0);
+  const [showFireworks, setShowFireworks] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsVisible(false);
+      setTimeout(() => {
+        setCurrentNope((prev) => (prev + 1) % 3);
+        setIsVisible(true);
+      }, 200);
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const nopeTexts = ['Nope', 'Nope', 'Nope!'];
+  const colors = ['text-red-500', 'text-blue-500', 'text-green-500'];
+  const sizes = ['text-6xl', 'text-7xl', 'text-8xl'];
+  const rotations = ['rotate-3', '-rotate-2', 'rotate-1'];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 2}s`,
+              animationDuration: `${2 + Math.random() * 3}s`,
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <div className="w-2 h-2 bg-white/20 rounded-full animate-ping" />
+          </div>
+        ))}
+      </div>
+
+      {/* Main content */}
+      <div className="relative z-10 text-center">
+        {/* Main "Nope Nope Nope!" text */}
+        <div className="mb-8 relative">
+          <h1 
+            className={`font-bold transition-all duration-500 transform ${
+              isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+            } ${colors[currentNope]} ${sizes[currentNope]} ${rotations[currentNope]} animate-bounce hover:animate-pulse cursor-pointer select-none`}
+            style={{
+              textShadow: '0 0 20px rgba(255,255,255,0.5)',
+              filter: 'drop-shadow(0 0 10px currentColor)',
+            }}
+            onClick={() => {
+              setCurrentNope(Math.floor(Math.random() * 3));
+              setClickCount(prev => prev + 1);
+              if (clickCount > 0 && clickCount % 5 === 0) {
+                setShowFireworks(true);
+                setTimeout(() => setShowFireworks(false), 2000);
+              }
+            }}
           >
-            Read our docs
-          </a>
+            {nopeTexts[currentNope]}
+          </h1>
+          
+          {/* Fireworks effect */}
+          {showFireworks && (
+            <div className="absolute inset-0 pointer-events-none">
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute text-4xl animate-ping"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 1}s`,
+                  }}
+                >
+                  ✨
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Subtitle */}
+        <div className="mb-12">
+          <p className="text-white/80 text-xl md:text-2xl font-light animate-pulse">
+            Welcome to the land of{' '}
+            <span className="font-bold text-yellow-400 animate-bounce inline-block gradient-text">
+              NOPE
+            </span>
+          </p>
+          {clickCount > 0 && (
+            <p className="text-sm text-white/60 mt-2 animate-fade-in">
+              Nope count: {clickCount} 🎯
+            </p>
+          )}
+        </div>
+
+        {/* Animated circles */}
+        <div className="flex justify-center space-x-4 mb-8">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className={`w-4 h-4 rounded-full transition-all duration-500 ${
+                currentNope === i ? 'bg-yellow-400 scale-150' : 'bg-white/30'
+              }`}
+              style={{
+                animationDelay: `${i * 0.2}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Fun interactive buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 items-center mb-8">
+          <button
+            onClick={() => {
+              setCurrentNope(Math.floor(Math.random() * 3));
+              setClickCount(prev => prev + 1);
+              // Add a little shake animation
+              const button = document.querySelector('.shake-button');
+              button?.classList.add('animate-shake');
+              setTimeout(() => {
+                button?.classList.remove('animate-shake');
+              }, 500);
+            }}
+            className="shake-button bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl active:scale-95"
+          >
+            Click for more NOPE! 🚫
+          </button>
+          
+          <button
+            onClick={() => {
+              setShowFireworks(true);
+              setTimeout(() => setShowFireworks(false), 2000);
+              setClickCount(prev => prev + 10);
+            }}
+            className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl active:scale-95"
+          >
+            MEGA NOPE! ✨
+          </button>
+        </div>
+
+        {/* Reset button (only show after some clicks) */}
+        {clickCount > 5 && (
+          <div className="animate-fade-in">
+            <button
+              onClick={() => {
+                setClickCount(0);
+                setCurrentNope(0);
+                setShowFireworks(false);
+              }}
+              className="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-6 rounded-full text-sm transition-all duration-300 transform hover:scale-105"
+            >
+              Reset Nope Counter 🔄
+            </button>
+          </div>
+        )}
+
+        {/* Floating "nope" words */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className={`absolute font-bold text-sm animate-bounce hover-glow ${
+                i % 3 === 0 ? 'text-red-300/30' : 
+                i % 3 === 1 ? 'text-blue-300/30' : 'text-green-300/30'
+              }`}
+              style={{
+                left: `${5 + (i * 8)}%`,
+                top: `${15 + (i * 6)}%`,
+                animationDelay: `${i * 0.4}s`,
+                animationDuration: `${2 + (i * 0.2)}s`,
+                fontSize: `${0.8 + (i * 0.1)}rem`,
+              }}
+            >
+              {i % 4 === 0 ? 'nope' : i % 4 === 1 ? 'nah' : i % 4 === 2 ? 'no way' : '🚫'}
+            </div>
+          ))}
+        </div>
+
+        {/* Achievement notification */}
+        {clickCount >= 20 && (
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black px-6 py-3 rounded-full font-bold animate-bounce z-50">
+            🏆 Nope Master Achieved! 🏆
+          </div>
+        )}
+      </div>
+
+      {/* Corner decorations */}
+      <div className="absolute top-4 left-4 text-white/30 text-6xl animate-spin-slow">
+        🚫
+      </div>
+      <div className="absolute top-4 right-4 text-white/30 text-6xl animate-spin-slow">
+        ❌
+      </div>
+      <div className="absolute bottom-4 left-4 text-white/30 text-6xl animate-spin-slow">
+        🙅‍♂️
+      </div>
+      <div className="absolute bottom-4 right-4 text-white/30 text-6xl animate-spin-slow">
+        🙅‍♀️
+      </div>
     </div>
   );
 }
+
+
+
+
+
+
+
