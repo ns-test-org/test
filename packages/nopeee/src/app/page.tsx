@@ -119,51 +119,41 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Fun interactive buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 items-center mb-8">
+        {/* Single interactive button */}
+        <div className="flex justify-center mb-8">
           <button
             onClick={() => {
               setCurrentNope(Math.floor(Math.random() * 3));
-              setClickCount(prev => prev + 1);
-              // Add a little shake animation
-              const button = document.querySelector('.shake-button');
+              const newCount = clickCount + 1;
+              setClickCount(newCount);
+              
+              // Show fireworks every 5 clicks or reset after 20 clicks
+              if (newCount % 5 === 0) {
+                setShowFireworks(true);
+                setTimeout(() => setShowFireworks(false), 2000);
+              }
+              
+              // Auto-reset after 20 clicks
+              if (newCount >= 20) {
+                setTimeout(() => {
+                  setClickCount(0);
+                  setCurrentNope(0);
+                  setShowFireworks(false);
+                }, 2000);
+              }
+              
+              // Add shake animation
+              const button = document.querySelector('.nope-button');
               button?.classList.add('animate-shake');
               setTimeout(() => {
                 button?.classList.remove('animate-shake');
               }, 500);
             }}
-            className="shake-button bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl active:scale-95"
+            className="nope-button bg-gradient-to-r from-pink-500 via-violet-500 to-yellow-500 hover:from-pink-600 hover:via-violet-600 hover:to-yellow-600 text-white font-bold py-6 px-12 rounded-full text-xl transition-all duration-300 transform hover:scale-110 hover:shadow-2xl active:scale-95"
           >
-            Click for more NOPE! 🚫
-          </button>
-          
-          <button
-            onClick={() => {
-              setShowFireworks(true);
-              setTimeout(() => setShowFireworks(false), 2000);
-              setClickCount(prev => prev + 10);
-            }}
-            className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-4 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl active:scale-95"
-          >
-            MEGA NOPE! ✨
+            ULTIMATE NOPE! 🚫✨
           </button>
         </div>
-
-        {/* Reset button (only show after some clicks) */}
-        {clickCount > 5 && (
-          <div className="animate-fade-in">
-            <button
-              onClick={() => {
-                setClickCount(0);
-                setCurrentNope(0);
-                setShowFireworks(false);
-              }}
-              className="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-6 rounded-full text-sm transition-all duration-300 transform hover:scale-105"
-            >
-              Reset Nope Counter 🔄
-            </button>
-          </div>
-        )}
 
         {/* Floating "nope" words */}
         <div className="absolute inset-0 pointer-events-none">
@@ -211,6 +201,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
 
