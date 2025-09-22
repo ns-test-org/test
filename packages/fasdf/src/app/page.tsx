@@ -72,13 +72,7 @@ export default function Home() {
               Hello World
             </span>
           </h1>
-          <div className="flex justify-center space-x-4 text-4xl animate-pulse">
-            <span className="text-yellow-300">✨</span>
-            <span className="text-pink-300">🌟</span>
-            <span className="text-blue-300">💫</span>
-            <span className="text-purple-300">⭐</span>
-            <span className="text-cyan-300">✨</span>
-          </div>
+
           <p className="text-xl md:text-2xl text-white/80 mt-8 font-light">
             We love you homie ✨
           </p>
@@ -105,5 +99,6 @@ export default function Home() {
     </div>
   );
 }
+
 
 
