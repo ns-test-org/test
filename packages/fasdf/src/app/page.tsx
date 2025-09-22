@@ -80,7 +80,7 @@ export default function Home() {
             <span className="text-cyan-300">✨</span>
           </div>
           <p className="text-xl md:text-2xl text-white/80 mt-8 font-light">
-            Welcome to a sparkling new world!
+            We love you homie ✨
           </p>
         </div>
       </div>
@@ -105,4 +105,5 @@ export default function Home() {
     </div>
   );
 }
+
 
