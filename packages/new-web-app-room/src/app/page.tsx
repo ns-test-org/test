@@ -4,7 +4,7 @@ export default function Home() {
       <div className="text-center space-y-8 p-8">
         <div className="space-y-4">
           <h1 className="text-6xl font-bold text-gray-800 dark:text-white">
-            Hello World!
+            Coops Hello World
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-md mx-auto">
             Welcome to your new landing page. This is where your journey begins.
@@ -23,4 +23,5 @@ export default function Home() {
     </div>
   );
 }
+
 
